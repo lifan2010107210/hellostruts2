@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="default" namespace="/" extends="struts-default">
+    	<!-- 通知struts2框架工程内部使用timer拦截器 -->
+    	<interceptors>
+    		<interceptor name="myInterceptor" class="com.interceptor.MyInterceptor"/>
+    		<interceptor name="myInterceptor2" class="com.interceptor.MyInterceptor2"/>
+    		<interceptor-stack name="mystack">
+    			<interceptor-ref name="defaultStack"/>
+    			<interceptor-ref name="myInterceptor"/>
+    			<interceptor-ref name="myInterceptor2"/>
+    		</interceptor-stack>
+    	</interceptors>
+    	<default-action-ref name="listStudents"/>
+		<action name="listStudents" class="com.action.StudentAction" method="listStudents">
+			<!-- type常用类型有4种：dispatcher转发到JSP，chain转发到Action，redirect重定向到JSP，redirectAction重定向到Action -->
+			<result name="success">/index.jsp</result>
+			<interceptor-ref name="mystack"/>
+		</action>
+		<action name="saveStudent" class="com.action.StudentAction" method="saveStudent">
+			<result name="success" type="redirectAction">listStudents</result>
+		</action>
+		<action name="removeStudent" class="com.action.StudentAction" method="removeStudent">
+			<result name="success" type="redirectAction">listStudents</result>
+		</action>
+			
+		<action name="toUpdateStudent" class="com.action.StudentAction" method="toUpdateStudent">
+			<result name="success">/update.jsp</result>
+		</action>	
+		
+		<action name="updateStudent" class="com.action.StudentAction" method="updateStudent">
+			<result name="success" type="redirectAction">listStudents</result>
+		</action>
+		
+		
+		<action name="test" class="com.action.TestAction" method="test">
+			<result name="success">welcome.jsp</result>
+			<result name="input">test.jsp</result>
+		</action>
+		<action name="test2" class="com.action.TestAction" method="test2">
+			<result name="success">welcome.jsp</result>
+			<result name="input">test.jsp</result>
+		</action>
+		
+		
+		
+		
+		<!-- <action name="ajaxStuName" class="com.action.TestAction" method="ajaxStuName">
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
+		</action> -->
+						
+    </package>
+    
+</struts>
